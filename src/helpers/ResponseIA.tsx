@@ -1,41 +1,28 @@
+import { responseIASelect } from "./resolveURL";
 
+const { Configuration, OpenAIApi } = require("openai");
+const configuration = new Configuration({
+  apiKey: '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',
+});
 
-export const responseIASelect=(responseDataIA: string)=>{
-    const id : number = responseDataIA.indexOf('!');
-    if(responseDataIA[id+1] === '['){
-        const messageResponse = cutMessageNew(responseDataIA, id);
-        const idData : number = messageResponse.indexOf('(');
-        if(messageResponse[idData+1] === 'h' && messageResponse[idData+2] === 't' && messageResponse[idData+3] === 't'){
-            const idDataEnd: number= messageResponse.indexOf(')');
-            const {message, urlImg}=getUrlImage(responseDataIA,messageResponse, id, idData, idDataEnd);
-            return {message, urlImg};
-        }
-        return {message : responseDataIA, urlImg: 'none'};
-    }
+const openai = new OpenAIApi(configuration);
 
-    return {message : responseDataIA, urlImg: 'none'};
+export const openIA=async(question: string)=>{
 
-
-}
-
-const cutMessageNew=(data: string, idexStart: number)=>{
-    let cutMessage = '';
+    try {
     
-    for(var i = idexStart; i<data.length; i++){
-        cutMessage =cutMessage+ data[i];
+    const response = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: question,
+      temperature: 0.8,
+      max_tokens: 300,
+    });
+    const datos = response.data.choices as JSON;
+    const {message, urlImg} = responseIASelect(datos[0].text);
+
+    return {message, urlImg};
+    } catch (error) {
+    
     }
-    // console.log("el uri de la imegan es: " + cutMessage);
-    return cutMessage;
-}
-const getUrlImage=(data: string, cutMessage: string, messageIdex: number ,startIndex: number, endIndex: number)=>{
-    let urlImg = '';
-    let message = '';
-    for(var i = startIndex+1; i<endIndex; i++){
-        urlImg = urlImg+ cutMessage[i];
-    }
-    for(var i = 0; i<messageIdex; i++){
-        message =message+ data[i];
-    }
-    // console.log("el uri de la imegan es: " + urlImg);
-    return{message, urlImg};
-}
+    return {message: '', urlImg:''};
+  }
