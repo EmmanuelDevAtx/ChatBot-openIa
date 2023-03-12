@@ -32,27 +32,28 @@ const App = () => {
     setButton(false);
   }
 
-  const regenerateResponse=(questionBefore :string)=>{
-    // console.log(questionBefore);
-    setResponseArrayIA([]);
-    // console.log("La resupesta es "+responseArrayIA);
-    setResponseArrayIA(responseArrayIABefore);
-    openIA(questionBefore);
+  const regenerateResponse=async(questionBefore :string)=>{
+    // setResponseArrayIA([]);
+    // openIARegenerate(questionBefore);
   }
 
+  ///////////////////////////////
+  //// REGENERATE DE LAST QUESTION
   const openIA=async(questionSelf: string)=>{
     try {
-      setLastQuestion(questionSelf);
+    setResponseArrayIA(responseArrayIABefore);
+    setResponseArrayIABefore(responseArrayIA);
+    setLastQuestion(questionSelf);
     setIsLoadingResponse(true);
     setQuestionEnable(true);
     setResponseIA("");
-    setResponseArrayIABefore(responseArrayIA);
-    console.log(questionSelf);
+    console.log(responseArrayIA);
+    console.log(responseArrayIA.length);
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: question,
-      temperature: 0.8,
-      max_tokens: 300,
+      prompt: questionSelf,
+      temperature: 0.7,
+      max_tokens: 250,
     });
     const datos = response.data.choices as JSON;
     const {message, urlImg} = responseIASelect(datos[0].text);
@@ -61,10 +62,9 @@ const App = () => {
     setButton(true);
     setIsLoadingResponse(false);
     setResponseIA(message);
-
-    const addResponse=[{questionUser: questionSelf ,response : message, uriImg:urlImg },...responseArrayIA];
+    
+    const addResponse=[{questionUser: questionSelf ,response : message, uriImg:urlImg }, ...responseArrayIA];
     setResponseArrayIA(addResponse);
-    // console.log(responseArrayIA);
     } catch (error) {
       console.log('algo salió mal :(r');
       setQuestionEnable(false);
@@ -94,7 +94,7 @@ const App = () => {
               </>
               : <></>
             }
-            <Button  mode='outlined' onPress={()=>regenerateResponse(lastQuestion)} style={{marginVertical:5}}> Regenerate Response</Button> 
+            <Button  mode='outlined' onPress={()=>regenerateResponse(questionUser)} style={{marginVertical:5}}> Regenerate Response</Button> 
           </Card.Content>
         </Card>
     </View>
