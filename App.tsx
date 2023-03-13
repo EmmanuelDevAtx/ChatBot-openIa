@@ -4,7 +4,7 @@ import { Clipboard, FlatList, Image, ScrollView, View } from 'react-native';
 
 import { Button, Card, Provider as PaperProvider, Text, TextInput } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-
+import LinearGradient from 'react-native-linear-gradient';
 
 import Rive from 'rive-react-native';
 import "react-native-url-polyfill/auto";
@@ -102,6 +102,7 @@ const App = () => {
   return (
     <PaperProvider>  
       <SafeAreaView style={{justifyContent:'center', alignContent:'center', flex:1 }}>
+        <LinearGradient colors={['#CEEFF7','#7DBCFD','#3223BA']} style={{height:'100%'}}>
         <Card  style={{}}>
           <Card.Content >
             <Text style={{alignSelf:'center', fontSize:20, marginVertical:10}}>Welcom to Chat bot</Text>
@@ -186,6 +187,7 @@ const App = () => {
       }
         
         </ScrollView>
+        </LinearGradient>
       </SafeAreaView>
    </PaperProvider>
     
