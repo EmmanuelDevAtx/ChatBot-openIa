@@ -8,17 +8,23 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Rive from 'rive-react-native';
 import "react-native-url-polyfill/auto";
-import { responseIASelect } from './src/helpers/resolveURL';
-import { openIA } from './src/helpers/responseIA';
+import { openIA } from './src/helpers/ResponseIA';
 
 
-
+type responseInfo={
+  questionUser: string,
+  response: string,
+  uriImg: string,
+}
 
 const App = () => {
   const [question, setQuestion] = useState("");
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const [responseArrayIA, setResponseArrayIA]=useState<any[]>([]);
-  const [lastInformation, setLastInformation]=useState<{questionUser: string,response : string, uriImg:string}>({questionUser: 'Welcome to my chat bot ',response : 'please use to learn werever you want', uriImg:'none'});
+  const [lastInformation, setLastInformation]=useState<responseInfo>(
+    {questionUser: 'Welcome to my chat bot ',
+    response : 'please use to learn werever you want', 
+    uriImg:'none'});
  
   useEffect(() => {
     console.log(lastInformation.questionUser);
@@ -66,7 +72,6 @@ const App = () => {
   }
 
   
-
   const renderItem = ({
     item: {
       questionUser = '',
@@ -89,18 +94,13 @@ const App = () => {
               </>
               : <></>
             }
-            {/* <Button  mode='outlined' onPress={()=>regenerateResponse(questionUser)} style={{marginVertical:5}}> Regenerate Response</Button> */}
           </Card.Content>
         </Card>
     </View>
   );
 
   return (
-        
-    <PaperProvider>
-      
-        
-        
+    <PaperProvider>  
       <SafeAreaView style={{justifyContent:'center', alignContent:'center', flex:1 }}>
         <Card  style={{}}>
           <Card.Content >
@@ -116,17 +116,12 @@ const App = () => {
           <Button  mode='outlined' onPress={()=>
           {
             ask(question);
-          }} style={{marginVertical:5}}> Ask OpenIA</Button> 
+          }} style={{marginVertical:5}}> Ask OpenIA</Button>
           <Button  mode='outlined' onPress={async()=>{
-              
               console.log('tus datos osn' ,lastInformation);
-
             }} style={{marginVertical:5}}> Regenerate Response</Button> 
-          
-          
           </Card.Content>
         </Card>
-        
         <ScrollView>
         <View style={{marginVertical:20 , paddingHorizontal:20
     }}>
@@ -136,24 +131,24 @@ const App = () => {
           ?
           <Card >
           <Card.Content >
-            
               <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0}}>{lastInformation.questionUser}</Text>
              <Text style={{alignSelf:'center', fontSize:15, marginVertical:0}}>{lastInformation.response}</Text>
-            
+             {
+              lastInformation.uriImg !== 'none'
+              ? <>
+                <Image source={{uri: lastInformation.uriImg}}
+              style={{width: 200, height: 200, alignSelf:'center'}} />
+              
+              </>
+              : <></>
+            }
              <Button  mode='outlined' onPress={()=>regenerateResponse(lastInformation.questionUser)} style={{marginVertical:5}}> Regenerate Response</Button>
           
           </Card.Content>
         </Card>
-          
-          
-        
           : <></>
-
         }
         </View>
-        
-          
-              
             {isLoadingResponse ? 
       <View style={{marginVertical:20 , paddingHorizontal:20
       }}>
@@ -189,7 +184,7 @@ const App = () => {
         :
           <></>
       }
-        {/* <Text style={{alignSelf:'center', fontSize:14, marginVertical:10}}>{responseArrayIA}</Text> */}
+        
         </ScrollView>
       </SafeAreaView>
    </PaperProvider>
