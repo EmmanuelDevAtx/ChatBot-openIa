@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Clipboard, FlatList, Image, ScrollView, View } from 'react-native';
 
 import { Button, Card, Provider as PaperProvider, Text, TextInput } from 'react-native-paper';
@@ -18,16 +18,28 @@ const App = () => {
   const [question, setQuestion] = useState("");
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const [responseArrayIA, setResponseArrayIA]=useState<any[]>([]);
-  const [lastInformation, setLastInformation]=useState({});
+  const [lastInformation, setLastInformation]=useState<{questionUser: string,response : string, uriImg:string}>({questionUser: 'Welcome to my chat bot ',response : 'please use to learn werever you want', uriImg:'none'});
  
-
+  useEffect(() => {
+    console.log(lastInformation.questionUser);
+  }, [lastInformation,...responseArrayIA]);
   const cliBoard=(respuestaIa : string)=>{
     Clipboard.setString(respuestaIa);
   }
 
-  const regenerateResponse=(questionBefore :string)=>{
-    setResponseArrayIA([]);
-    ask(questionBefore);
+  const regenerateResponse=async(questionBefore :string)=>{
+    await cleanInformation();
+    setIsLoadingResponse(true);
+    const {message, urlImg}= await openIA(questionBefore);
+      if(message === '' || urlImg === ''){
+        return console.log('algo ha pasado');
+      }
+      setIsLoadingResponse(false);
+      setLastInformation({questionUser: questionBefore,response : message, uriImg:urlImg});
+  }
+
+  const cleanInformation=async()=>{
+    await setLastInformation({questionUser: 'none',response : 'none', uriImg:'none'});
   }
   const updateInfotmation=()=>{
     const information: any[]= [lastInformation, ...responseArrayIA];
@@ -36,21 +48,25 @@ const App = () => {
 
   const ask=async(questionSelf: string)=>{
     try {
-      
+      await cleanInformation();
       setIsLoadingResponse(true);
       setQuestion('');
+      updateInfotmation();
       const {message, urlImg}= await openIA(questionSelf);
       if(message === '' || urlImg === ''){
         return console.log('algo ha pasado');
       }
       setIsLoadingResponse(false);
       setLastInformation({questionUser: questionSelf,response : message, uriImg:urlImg});
-      setLastInformation({});
+      console.log(lastInformation);
     } catch (error) {
       console.log('algo salió mal :(r');
     }
     setIsLoadingResponse(false);
   }
+
+  
+
   const renderItem = ({
     item: {
       questionUser = '',
@@ -73,7 +89,7 @@ const App = () => {
               </>
               : <></>
             }
-            <Button  mode='outlined' onPress={()=>regenerateResponse(questionUser)} style={{marginVertical:5}}> Regenerate Response</Button>
+            {/* <Button  mode='outlined' onPress={()=>regenerateResponse(questionUser)} style={{marginVertical:5}}> Regenerate Response</Button> */}
           </Card.Content>
         </Card>
     </View>
@@ -110,7 +126,32 @@ const App = () => {
           
           </Card.Content>
         </Card>
+        
         <ScrollView>
+        <View style={{marginVertical:20 , paddingHorizontal:20
+    }}>
+        {
+          
+          lastInformation.questionUser !== 'none'
+          ?
+          <Card >
+          <Card.Content >
+            
+              <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0}}>{lastInformation.questionUser}</Text>
+             <Text style={{alignSelf:'center', fontSize:15, marginVertical:0}}>{lastInformation.response}</Text>
+            
+             <Button  mode='outlined' onPress={()=>regenerateResponse(lastInformation.questionUser)} style={{marginVertical:5}}> Regenerate Response</Button>
+          
+          </Card.Content>
+        </Card>
+          
+          
+        
+          : <></>
+
+        }
+        </View>
+        
           
               
             {isLoadingResponse ? 
@@ -120,7 +161,6 @@ const App = () => {
 
          <Card.Content >
           <Rive
-          
             resourceName='making_message'
             style={{width: 200, height: 200, alignSelf:'center'}}
             />
