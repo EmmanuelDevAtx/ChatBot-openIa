@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Image, View } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Card, Text } from "react-native-paper";
+import Rive from 'rive-react-native';
 
 interface cardInformation{
     onPress: () => void,
@@ -21,8 +22,8 @@ export const CardCenter=(data: cardInformation)=>{
             <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0, flex:1}}>{data.questionUser}</Text>
              <Text style={{alignSelf:'center', fontSize:15, marginVertical:0, flex:1}}>{data.responseUser}</Text>
              {
-              data.uriImg !== 'none' && data.uriImg
-              ? <>
+               data.uriImg !== 'none' && data.uriImg
+               ? <>
                 <Image source={{uri: data.uriImg}}
               style={{width: 200, height: 200, alignSelf:'center'}} />
               
