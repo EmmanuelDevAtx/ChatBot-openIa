@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Clipboard, FlatList, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Clipboard, FlatList, Image, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme as DefaultTheme, AnimatedFAB, } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,7 @@ import { openIA } from './src/helpers/ResponseIA';
 
 import { Banner } from 'react-native-paper';
 import { colors } from './src/Theme/Colors';
+import { CardCenter } from './src/components/cardCenter';
 
 // const theme = {...DefaultTheme, color:{
 //   primary: '#66EAFF'
@@ -90,35 +91,22 @@ const App = () => {
   }) => (
     <View style={{marginVertical:20 , paddingHorizontal:20
     }}>
-    <Card onPress={()=>cliBoard(response)} style={styles.cardResponse}>
-          <Card.Content >
-           <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0, flex:1}}>{questionUser}</Text>
-            <Text style={{alignSelf:'center', fontSize:15, marginVertical:0, flex:1}}>{response}</Text>
-            {
-              uriImg !== 'none'
-              ? <>
-                <Image source={{uri: uriImg}}
-              style={{width: 200, height: 200, alignSelf:'center'}} />
-              
-              </>
-              : <></>
-            }
-          </Card.Content>
-        </Card>
+        <CardCenter
+          onPress={()=>{}}
+          questionUser={questionUser}
+          responseUser={response}
+          style={styles.cardResponse}
+          uriImg={uriImg}
+        />
     </View>
   );
-  //colores 
-  // 120536
-// 2D208A
-// A70984
-// 15D8FB
 
 
 
   return (
     <PaperProvider theme={theme}>  
       <SafeAreaView style={{justifyContent:'center', alignContent:'center', flex:1 }}>
-        <LinearGradient colors={['#120536','#2D208A']} style={{height:'100%'}}>
+        <LinearGradient colors={['#29313B','#1A1E23']} style={{height:'100%'}}>
         <Banner
         style={{...styles.cardResponse, borderRadius:0, borderBottomWidth:2,borderWidth:0, backgroundColor:'rgba(19, 19, 19, 0.5)',}}
       visible={showQuestion}
@@ -134,6 +122,8 @@ const App = () => {
               onChangeText={text => setQuestion(text)}
               style={{marginVertical:15, width: 330, height: 50, alignSelf:'center'}}
             />
+
+          
 
           {
             !isLoadingResponse 
