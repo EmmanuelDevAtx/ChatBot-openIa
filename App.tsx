@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
-import { Clipboard, FlatList, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Clipboard, FlatList, Image, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme as DefaultTheme, AnimatedFAB, } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -12,6 +12,9 @@ import { openIA } from './src/helpers/ResponseIA';
 
 import { Banner } from 'react-native-paper';
 import { colors } from './src/Theme/Colors';
+import { CardCenter } from './src/components/cardCenter';
+import { BannerOpenIa } from './src/components/Banner';
+import { CardCenterEmpty } from './src/components/cardCenterEmpty';
 
 // const theme = {...DefaultTheme, color:{
 //   primary: '#66EAFF'
@@ -26,7 +29,7 @@ type responseInfo={
 }
 
 const App = () => {
-  const [showQuestion, setShhowQuestion] = useState(false);
+  const [showQuestion, setShhowQuestion] = useState(true);
   const [question, setQuestion] = useState("");
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const [responseArrayIA, setResponseArrayIA]=useState<any[]>([]);
@@ -90,66 +93,31 @@ const App = () => {
   }) => (
     <View style={{marginVertical:20 , paddingHorizontal:20
     }}>
-    <Card onPress={()=>cliBoard(response)} style={styles.cardResponse}>
-          <Card.Content >
-           <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0, flex:1}}>{questionUser}</Text>
-            <Text style={{alignSelf:'center', fontSize:15, marginVertical:0, flex:1}}>{response}</Text>
-            {
-              uriImg !== 'none'
-              ? <>
-                <Image source={{uri: uriImg}}
-              style={{width: 200, height: 200, alignSelf:'center'}} />
-              
-              </>
-              : <></>
-            }
-          </Card.Content>
-        </Card>
+        <CardCenter
+          onPress={()=>cliBoard(response)}
+          questionUser={questionUser}
+          responseUser={response}
+          style={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+          uriImg={uriImg}
+        />
     </View>
   );
-  //colores 
-  // 120536
-// 2D208A
-// A70984
-// 15D8FB
 
 
 
   return (
     <PaperProvider theme={theme}>  
       <SafeAreaView style={{justifyContent:'center', alignContent:'center', flex:1 }}>
-        <LinearGradient colors={['#120536','#2D208A']} style={{height:'100%'}}>
-        <Banner
-        style={{...styles.cardResponse, borderRadius:0, borderBottomWidth:2,borderWidth:0, backgroundColor:'rgba(19, 19, 19, 0.5)',}}
-      visible={showQuestion}
-
-      icon={({size}) => (
-        <View >
-          <Text style={{alignSelf:'center', fontSize:20, marginVertical:10}}>Welcom to Chat bot</Text>
-          <TextInput
-              disabled = {isLoadingResponse}
-              mode='outlined'
-              label="Enter your question"
-              value={question}
-              onChangeText={text => setQuestion(text)}
-              style={{marginVertical:15, width: 330, height: 50, alignSelf:'center'}}
-            />
-
-          {
-            !isLoadingResponse 
-            ? <Button  mode='outlined' onPress={()=>
-              {
-                ask(question);
-              }} style={{marginVertical:5}}> Ask OpenIA</Button>
-            : <></>
-          }
-
-        </View>
-        
-      )}
-      >
-        
-    </Banner>
+        <LinearGradient colors={['#29313B','#1A1E23']} style={{height:'100%'}}>
+        <BannerOpenIa
+          styles={styles.cardResponse}
+          visible={showQuestion}
+          loadingResponse={isLoadingResponse}
+          askQuestion={()=> ask(question)}
+          onChangeText={(text) => setQuestion(text)}
+          question={question}
+        />
         
         <ScrollView>
         <View style={{marginVertical:20 , paddingHorizontal:20
@@ -158,38 +126,27 @@ const App = () => {
           
           lastInformation.questionUser !== 'none'
           ?
-          <Card onPress={()=>cliBoard(lastInformation.response)} style={styles.cardResponse}>
-          <Card.Content >
-              <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0}}>{lastInformation.questionUser}</Text>
-             <Text style={{alignSelf:'center', fontSize:15, marginVertical:0}}>{lastInformation.response}</Text>
-             {
-              lastInformation.uriImg !== 'none'
-              ? <>
-                <Image source={{uri: lastInformation.uriImg}}
-              style={{width: 200, height: 200, alignSelf:'center'}} />
-              
-              </>
-              : <></>
-            }
-             <Button  mode='outlined' onPress={()=>regenerateResponse(lastInformation.questionUser)} style={{marginVertical:5}}> Regenerate Response</Button>
-          
-          </Card.Content>
-        </Card>
+        <CardCenter
+          onPress={()=>cliBoard(lastInformation.response)}
+          questionUser={lastInformation.questionUser}
+          responseUser={lastInformation.response}
+          style={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+          uriImg={lastInformation.uriImg}
+          onRegenerate={()=>regenerateResponse(lastInformation.questionUser)}
+        />
           : <></>
         }
         </View>
             {isLoadingResponse ? 
       <View style={{marginVertical:20 , paddingHorizontal:20
       }}>
-        <Card style={styles.cardResponse}>
-
-         <Card.Content >
-          <Rive
-            resourceName='making_message'
-            style={{width: 200, height: 200, alignSelf:'center'}}
-            />
-         </Card.Content>
-            </Card>
+        
+        <CardCenterEmpty
+          resourceName='making_message'
+          styles={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+        />
       </View>
       : <></>
       }            
@@ -252,10 +209,16 @@ const styles = StyleSheet.create({
   },
   cardResponse:{
     backgroundColor:'rgba(19, 19, 19, 0.2)', 
-    borderRadius:20, 
-    shadowColor:'rgba(0, 0, 0, 0.0)',
+    borderRadius:15,
+    shadowColor:'rgba(16, 17, 20, 2)',
+    paddingBottom:10,
+    paddingRight:3,
     borderColor:'#FFFFFF',
-    borderWidth:1,
-  }
+    // borderWidth:1,
+  },
+  cardResponseBackground:{
+    paddingVertical:15,
+    borderRadius:15, 
+  },
 });
 export default App;
