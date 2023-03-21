@@ -161,23 +161,6 @@ export const HomeScreen = () => {
             setShowQuestion={()=> setShhowQuestion(!showQuestion)}
             showquestion={showQuestion}
           />
-        {/* <View style={{position:'absolute', justifyContent:'center', alignItems:'center', width:'100%', height:'100%'}}> */}
-        {/* <AnimatedFAB
-        icon={({size}) => (
-          <Text style={{color:'black', alignSelf:'center'}}>{!showQuestion ?  'Open IA' : 'Hide IA'}</Text>
-          // <></>
-        )}
-        
-        color='black'
-        label={''}
-        extended={false}
-        onPress={() => setShhowQuestion(!showQuestion)}
-        visible={true}
-        animateFrom={'right'}
-        iconMode={'static'}
-        style={styles.fabStyle}
-      /> */}
-        {/* </View> */}
     </>
   )
 }
@@ -187,10 +170,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   fabStyle: {
-    // bottom:30,
-    // alignItems: 'center',
-    // alignContent:'flex-end',
-    // right: 16,
     alignSelf:'center',
     position: 'absolute',
     backgroundColor:'white',
@@ -203,7 +182,6 @@ const styles = StyleSheet.create({
     paddingBottom:10,
     paddingRight:3,
     borderColor:'#FFFFFF',
-    // borderWidth:1,
   },
   cardResponseBackground:{
     paddingVertical:15,

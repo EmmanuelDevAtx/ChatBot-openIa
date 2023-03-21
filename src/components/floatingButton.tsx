@@ -12,13 +12,11 @@ export const FloatingCustomButton= (props: floatData)=>{
         <AnimatedFAB
         icon={({size}) => (
           <Text style={{color:'black', alignSelf:'center'}}>{!props.showquestion ?  'Open IA' : 'Hide IA'}</Text>
-          // <></>
         )}
         
         color='black'
         label={''}
         extended={false}
-        // onPress={() => setShhowQuestion(!showQuestion)}
         onPress={() => props.setShowQuestion()}
         visible={true}
         animateFrom={'right'}
@@ -29,14 +27,11 @@ export const FloatingCustomButton= (props: floatData)=>{
 }
 
 const styles = StyleSheet.create({
-    fabStyle: {
-      // bottom:30,
-      // alignItems: 'center',
-      // alignContent:'flex-end',
-      // right: 16,
-      alignSelf:'center',
-      position: 'relative',
+  fabStyle: {
+    bottom: 16,
+    alignSelf:'center',
+    position: 'absolute',
       backgroundColor:'white',
       color:'black'
-    },
+  },
   });
