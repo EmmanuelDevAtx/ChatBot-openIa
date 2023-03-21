@@ -19,7 +19,7 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.chatbot.BuildConfig;
+import com.chatbot.ulearn.astratos.BuildConfig;
 import com.chatbot.newarchitecture.components.MainComponentsRegistry;
 import com.chatbot.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;

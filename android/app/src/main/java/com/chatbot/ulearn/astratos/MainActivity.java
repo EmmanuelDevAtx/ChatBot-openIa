@@ -1,4 +1,4 @@
-package com.chatbot;
+package com.chatbot.ulearn.astratos;
 
 import android.os.Bundle; // here
 
