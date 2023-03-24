@@ -27,6 +27,8 @@ export const HomeScreen = () => {
     {questionUser: 'Welcome to my chat bot ',
     response : 'please use to learn werever you want', 
     uriImg:'none'});
+
+    const [contextresponseArrayIA, setContextresponseArrayIA]=useState<any[]>([]);
  
   useEffect(() => {
     console.log(lastInformation.questionUser);
@@ -38,7 +40,7 @@ export const HomeScreen = () => {
   const regenerateResponse=async(questionBefore :string)=>{
     await cleanInformation();
     setIsLoadingResponse(true);
-    const {message, urlImg}= await openIA(questionBefore);
+    const {message, urlImg}= await openIA(questionBefore, responseArrayIA);
       if(message === '' || urlImg === ''){
         return console.log('algo ha pasado');
       }
@@ -51,7 +53,9 @@ export const HomeScreen = () => {
   }
   const updateInfotmation=()=>{
     const information: any[]= [lastInformation, ...responseArrayIA];
+    const contextinformation: any[]= [...responseArrayIA,lastInformation];
     setResponseArrayIA(information);
+    setContextresponseArrayIA(contextinformation);
   }
 
   const ask=async(questionSelf: string)=>{
@@ -60,13 +64,13 @@ export const HomeScreen = () => {
       setIsLoadingResponse(true);
       setQuestion('');
       updateInfotmation();
-      const {message, urlImg}= await openIA(questionSelf);
+      const {message, urlImg}= await openIA(questionSelf, contextresponseArrayIA);
       if(message === '' || urlImg === ''){
         return console.log('algo ha pasado');
       }
       setIsLoadingResponse(false);
       setLastInformation({questionUser: questionSelf,response : message, uriImg:urlImg});
-      console.log(lastInformation);
+      // console.log(lastInformation);
     } catch (error) {
       console.log('algo salió mal :(r');
     }

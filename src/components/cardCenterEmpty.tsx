@@ -19,6 +19,6 @@ export const CardCenterEmpty=(cardData: cardEmpty)=>{
             />
          </Card.Content>
          </LinearGradient>
-            </Card>
+        </Card>
     );
 }
