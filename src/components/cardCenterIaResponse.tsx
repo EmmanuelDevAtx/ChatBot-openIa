@@ -2,7 +2,9 @@ import * as React from 'react';
 import { Image, View } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Card, Text } from "react-native-paper";
-import Rive from 'rive-react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { stopSpeaking, textRead } from '../helpers/readText';
+const myIcon = <Icon name="rocket" size={30} color="#900" />;
 
 interface cardInformation{
     onPress: () => void,
@@ -33,8 +35,25 @@ export const CardCenterIaResponse=(data: cardInformation)=>{
               </>
               : <></>
             }
+            <View style={{marginTop:30, flexDirection:'row'}}>
+              <Button
+              mode='outlined'
+              onPress={() => stopSpeaking()}
+              icon={() => (
+                <Icon style={{padding:0, margin:0}} name={'square-outline'} size={30} color='gray'/>
+              )}>
+                <Text>Parar</Text>
+                </Button>
 
-            
+                <Button
+              mode='outlined'
+              onPress={() => textRead(data.responseUser)}
+              icon={() => (
+                <Icon style={{padding:0, margin:0}} name={'play-outline'} size={30} color='gray'/>
+              )}>
+                <Text>Reproducir</Text>
+                </Button>
+              </View>
           </Card.Content>
             </LinearGradient>
         </Card>

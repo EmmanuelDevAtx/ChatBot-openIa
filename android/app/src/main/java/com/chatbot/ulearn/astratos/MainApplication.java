@@ -12,6 +12,7 @@ import com.facebook.soloader.SoLoader;
 import com.chatbot.newarchitecture.MainApplicationReactNativeHost;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.oblador.vectoricons.VectorIconsPackage;
 
 // react-native-splash-screen >= 0.3.1
 import org.devio.rn.splashscreen.SplashScreenReactPackage;
