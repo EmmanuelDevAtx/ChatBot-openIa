@@ -15,7 +15,7 @@ export const colors = {"colors": {
     "onError": "rgb(105, 0, 5)",
     "errorContainer": "rgb(147, 0, 10)",
     "onErrorContainer": "rgb(255, 180, 171)",
-    "background": "rgba(19, 19, 19, 0.3)",
+    "background": "rgba(19, 19, 19, 1)",
     "onBackground": "rgb(233, 224, 228)",
     "surface": "rgb(30, 26, 29)",
     "onSurface": "rgb(233, 224, 228)",

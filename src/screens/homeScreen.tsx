@@ -7,7 +7,7 @@ import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme 
 import { BannerOpenIa } from '../components/Banner';
 import { CardCenterEmpty } from '../components/cardCenterEmpty';
 import { FloatingCustomButton } from '../components/floatingButton';
-import { textRead } from '../helpers/readText';
+import { stopSpeaking, textRead } from '../helpers/readText';
 import { CardCenterIaResponse } from '../components/cardCenterIaResponse';
 import { CardCenterUserQuestion } from '../components/cardCenterUserQuestion';
 
@@ -38,6 +38,7 @@ export const HomeScreen = () => {
   }
 
   const regenerateResponse=async(questionBefore :string)=>{
+    stopSpeaking();
     await cleanInformation();
     setIsLoadingResponse(true);
     const {message, urlImg}= await openIA(questionBefore);
@@ -45,6 +46,7 @@ export const HomeScreen = () => {
         return console.log('algo ha pasado');
       }
       setIsLoadingResponse(false);
+      textRead(message);
       setLastInformation({questionUser: questionBefore,response : message, uriImg:urlImg});
   }
 
@@ -59,6 +61,7 @@ export const HomeScreen = () => {
   const ask=async(questionSelf: string)=>{
     try {
       await cleanInformation();
+      stopSpeaking
       setIsLoadingResponse(true);
       setQuestion('');
       updateInfotmation();
