@@ -6261,6 +6261,11 @@ react-native-splash-screen@^3.3.0:
   resolved "https://registry.npmjs.org/react-native-splash-screen/-/react-native-splash-screen-3.3.0.tgz"
   integrity sha512-rGjt6HkoSXxMqH4SQUJ1gnPQlPJV8+J47+4yhgTIan4bVvAwJhEeJH7wWt9hXSdH4+VfwTS0GTaflj1Tw83IhA==
 
+react-native-tts@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.npmjs.org/react-native-tts/-/react-native-tts-4.1.0.tgz"
+  integrity sha512-tvf3lQ6u9MqztUie37qoPw5YQPqi0ql1lPhDsBBs/RRA6A/H1J9X9H/qb1A0Hx0ZpjavrEdtVSqQQ2JDZvZCTQ==
+
 react-native-url-polyfill@^1.3.0:
   version "1.3.0"
   resolved "https://registry.npmjs.org/react-native-url-polyfill/-/react-native-url-polyfill-1.3.0.tgz"
@@ -6276,10 +6281,10 @@ react-native-vector-icons@*:
     prop-types "^15.7.2"
     yargs "^16.1.1"
 
-react-native@*, react-native@^0.70.6, react-native@>=0.57.0:
-  version "0.70.6"
-  resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.6.tgz"
-  integrity sha512-xtQdImPHnwgraEx3HIZFOF+D1hJ9bC5mfpIdUGoMHRws6OmvHAjmFpO6qfdnaQ29vwbmZRq7yf14sbury74R/w==
+react-native@*, react-native@^0.70.7, react-native@>=0.57.0:
+  version "0.70.7"
+  resolved "https://registry.npmjs.org/react-native/-/react-native-0.70.7.tgz"
+  integrity sha512-MvnJJXiEPuOBbf1VPY5WXIUR/n6QB/DAk5XtBz3bzinpy9YBXiiQkhGIrTpVdVt37JeHOzafhfxAMf+Rs8jpvA==
   dependencies:
     "@jest/create-cache-key-function" "^27.0.1"
     "@react-native-community/cli" "9.3.2"

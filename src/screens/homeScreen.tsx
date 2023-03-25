@@ -1,13 +1,15 @@
 import * as React from 'react'
 import { useEffect, useState } from 'react';
 import { Clipboard, FlatList, ScrollView, StyleSheet, View } from 'react-native'
-import { CardCenter } from '../components/cardCenter';
 import { openIA } from '../helpers/ResponseIA';
-import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme as DefaultTheme, AnimatedFAB, } from 'react-native-paper';
+import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme as DefaultTheme, AnimatedFAB, Divider, } from 'react-native-paper';
 
 import { BannerOpenIa } from '../components/Banner';
 import { CardCenterEmpty } from '../components/cardCenterEmpty';
 import { FloatingCustomButton } from '../components/floatingButton';
+import { textRead } from '../helpers/readText';
+import { CardCenterIaResponse } from '../components/cardCenterIaResponse';
+import { CardCenterUserQuestion } from '../components/cardCenterUserQuestion';
 
 
 type responseInfo={
@@ -65,6 +67,7 @@ export const HomeScreen = () => {
         return console.log('algo ha pasado');
       }
       setIsLoadingResponse(false);
+      textRead(message);
       setLastInformation({questionUser: questionSelf,response : message, uriImg:urlImg});
       console.log(lastInformation);
     } catch (error) {
@@ -80,9 +83,9 @@ export const HomeScreen = () => {
       uriImg = '',
     },
   }) => (
-    <View style={{marginVertical:20 , paddingHorizontal:20
-    }}>
-        <CardCenter
+        <>
+        <Divider />
+          <CardCenterIaResponse
           onPress={()=>cliBoard(response)}
           questionUser={questionUser}
           responseUser={response}
@@ -90,7 +93,17 @@ export const HomeScreen = () => {
           styleBackgroundCard={styles.cardResponseBackground}
           uriImg={uriImg}
         />
-    </View>
+        
+
+        <CardCenterUserQuestion
+          onPress={()=>cliBoard(questionUser)}
+          questionUser={questionUser}
+          style={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+        />
+        
+        </>
+   
   );
   
   return (
@@ -105,24 +118,32 @@ export const HomeScreen = () => {
         />
         
         <ScrollView>
-        <View style={{marginVertical:20 , paddingHorizontal:20
-    }}>
         {
           
           lastInformation.questionUser !== 'none'
           ?
-        <CardCenter
-          onPress={()=>cliBoard(lastInformation.response)}
-          questionUser={lastInformation.questionUser}
-          responseUser={lastInformation.response}
-          style={styles.cardResponse}
-          styleBackgroundCard={styles.cardResponseBackground}
-          uriImg={lastInformation.uriImg}
-          onRegenerate={()=>regenerateResponse(lastInformation.questionUser)}
-        />
+
+          <>
+            <CardCenterIaResponse
+            onPress={()=>cliBoard(lastInformation.response)}
+            questionUser={lastInformation.questionUser}
+            responseUser={lastInformation.response}
+            style={styles.cardResponse}
+            styleBackgroundCard={styles.cardResponseBackground}
+            uriImg={lastInformation.uriImg}/>
+
+          <CardCenterUserQuestion
+            onPress={()=>cliBoard(lastInformation.questionUser)}
+            questionUser={lastInformation.questionUser}
+            style={styles.cardResponse}
+            styleBackgroundCard={styles.cardResponseBackground}/>
+          <Button  mode='outlined' buttonColor='#202931' onPress={()=>regenerateResponse(lastInformation.questionUser) } style={{marginVertical:20}}> Regenerate Response</Button>
+          
+        </>
+        
           : <></>
         }
-        </View>
+        
             {isLoadingResponse ? 
       <View style={{marginVertical:20 , paddingHorizontal:20
       }}>

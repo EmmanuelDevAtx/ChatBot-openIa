@@ -12,8 +12,8 @@ import "react-native-url-polyfill/auto";
 import { colors } from './src/Theme/Colors';
 import { HomeScreen } from './src/screens/homeScreen';
 
-
 const theme = {...DefaultTheme, ...colors};
+
 
 const App = () => {
   useEffect(() =>{

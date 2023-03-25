@@ -11,16 +11,19 @@ interface cardInformation{
     styleBackgroundCard: {},
     questionUser: string,
     uriImg?: string,
-    onRegenerate?: ()=>void,
 };
-export const CardCenter=(data: cardInformation)=>{
+export const CardCenterIaResponse=(data: cardInformation)=>{
 
     return(
-        <Card onPress={()=>data.onPress()} style={data.style}>
+      <>
+        <View style={{marginVertical:20 , paddingLeft:20, paddingRight:60
+      }}>
+      
+        <Card onPress={()=>data.onPress()} style={{...data.style, alignSelf:'flex-start'}}>
           <LinearGradient colors={['#2F3843','#394451']} style={data.styleBackgroundCard}>
           <Card.Content >
-            <Text style={{alignSelf:'flex-start', fontSize:19, marginVertical:0, flex:1}}>{data.questionUser}</Text>
-             <Text style={{alignSelf:'center', fontSize:15, marginVertical:0, flex:1}}>{data.responseUser}</Text>
+            <Text style={{alignSelf:'flex-start', fontSize:17,  marginBottom:10}}>Tu asistente: </Text>
+             <Text style={{alignSelf:'center', fontSize:15, marginVertical:0}}>{data.responseUser}</Text>
              {
                data.uriImg !== 'none' && data.uriImg
                ? <>
@@ -31,14 +34,13 @@ export const CardCenter=(data: cardInformation)=>{
               : <></>
             }
 
-            {
-              data.onRegenerate ?
-              <Button  mode='outlined' onPress={()=>data.onRegenerate() } style={{marginVertical:5}}> Regenerate Response</Button>
-              : <></>
-            }
+            
           </Card.Content>
             </LinearGradient>
         </Card>
+      </View>
 
+      
+      </>
     );
 }
