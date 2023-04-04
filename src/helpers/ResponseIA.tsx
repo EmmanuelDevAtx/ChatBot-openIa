@@ -10,6 +10,7 @@ const openai = new OpenAIApi(configuration);
 export const openIA=async(question: string)=>{
 
     try {
+    
     const response = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: question,

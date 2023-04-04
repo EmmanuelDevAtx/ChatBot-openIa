@@ -74,7 +74,7 @@ export const HomeScreen = () => {
       setLastInformation({questionUser: questionSelf,response : message, uriImg:urlImg});
       console.log(lastInformation);
     } catch (error) {
-      console.log('algo salió mal :(r', error);
+      console.log('algo salió mal :(r');
     }
     setIsLoadingResponse(false);
   }
