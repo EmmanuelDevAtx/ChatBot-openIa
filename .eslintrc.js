@@ -4,7 +4,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   plugins: ['@typescript-eslint'],
   rules:{
-    'prettier/prettier':0
+    'prettier/prettier':0,
   },
   overrides: [
     {

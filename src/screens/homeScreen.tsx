@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react';
 import { Clipboard, FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import { openIA } from '../helpers/ResponseIA';
-import { Button, Card, Provider as PaperProvider, Text, TextInput, MD3DarkTheme as DefaultTheme, AnimatedFAB, Divider, } from 'react-native-paper';
+import { Button,  Divider, } from 'react-native-paper';
 
 import { BannerOpenIa } from '../components/Banner';
 import { CardCenterEmpty } from '../components/cardCenterEmpty';
@@ -11,14 +11,16 @@ import { stopSpeaking, textRead } from '../helpers/readText';
 import { CardCenterIaResponse } from '../components/cardCenterIaResponse';
 import { CardCenterUserQuestion } from '../components/cardCenterUserQuestion';
 
-
 type responseInfo={
   questionUser: string,
   response: string,
   uriImg: string,
 }
 
-
+type context={
+  role: string,
+  content: string,
+}
 
 export const HomeScreen = () => {
   const [showQuestion, setShhowQuestion] = useState(true);
@@ -32,16 +34,16 @@ export const HomeScreen = () => {
  
   useEffect(() => {
     console.log(lastInformation.questionUser);
-  }, [lastInformation,...responseArrayIA]);
+  }, [lastInformation]);
   const cliBoard=(respuestaIa : string)=>{
     Clipboard.setString(respuestaIa);
   }
 
-  const regenerateResponse=async(questionBefore :string)=>{
+  const regenerateResponse = async(questionBefore :string)=>{
     stopSpeaking();
     await cleanInformation();
     setIsLoadingResponse(true);
-    const {message, urlImg}= await openIA(questionBefore);
+    const {message, urlImg} = await openIA(questionBefore);
       if(message === '' || urlImg === ''){
         return console.log('algo ha pasado');
       }
@@ -49,12 +51,17 @@ export const HomeScreen = () => {
       textRead(message);
       setLastInformation({questionUser: questionBefore,response : message, uriImg:urlImg});
   }
-
-  const cleanInformation=async()=>{
+  // const newRewards = [...rewards];
+  // newRewards.splice(index, 1);
+  // {"role": "system", "content": "You are a helpful assistant."},
+  //       {"role": "user", "content": "Who won the world series in 2020?"},
+  //       {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
+  //       {"role": "user", "content": "Where was it played?"}
+  const cleanInformation = async()=>{
     await setLastInformation({questionUser: 'none',response : 'none', uriImg:'none'});
   }
-  const updateInfotmation=()=>{
-    const information: any[]= [lastInformation, ...responseArrayIA];
+  const updateInfotmation = ()=>{
+    const information: any[] = [lastInformation, ...responseArrayIA];
     setResponseArrayIA(information);
   }
 
@@ -87,26 +94,23 @@ export const HomeScreen = () => {
     },
   }) => (
         <>
-        <Divider />
-          <CardCenterIaResponse
-          onPress={()=>cliBoard(response)}
-          questionUser={questionUser}
-          responseUser={response}
-          style={styles.cardResponse}
-          styleBackgroundCard={styles.cardResponseBackground}
-          uriImg={uriImg}
-        />
-        
+          <Divider />
+            <CardCenterIaResponse
+            onPress={()=>cliBoard(response)}
+            questionUser={questionUser}
+            responseUser={response}
+            style={styles.cardResponse}
+            styleBackgroundCard={styles.cardResponseBackground}
+            uriImg={uriImg}
+          />
 
-        <CardCenterUserQuestion
-          onPress={()=>cliBoard(questionUser)}
-          questionUser={questionUser}
-          style={styles.cardResponse}
-          styleBackgroundCard={styles.cardResponseBackground}
-        />
-        
-        </>
-   
+          <CardCenterUserQuestion
+            onPress={()=>cliBoard(questionUser)}
+            questionUser={questionUser}
+            style={styles.cardResponse}
+            styleBackgroundCard={styles.cardResponseBackground}
+          />
+        </> 
   );
   
   return (

@@ -1,6 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
-import { Clipboard, FlatList, Image, RefreshControl, ScrollView, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect} from 'react';
 
 import {Provider as PaperProvider, MD3DarkTheme as DefaultTheme, } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
