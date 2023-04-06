@@ -22,7 +22,7 @@ export const CardCenterUserQuestion=(data: cardInformation)=>{
           <Card.Content style={{alignSelf:'flex-end'}}>
           <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize:17, marginBottom:10}}>Yo </Text>
-            <Icon style={{padding:0, margin:0}} name={'ice-cream'} size={20} color='white'/>
+            
             </View>
             
             <Text style={{ fontSize:15}}>{data.questionUser}</Text>

@@ -12,3 +12,7 @@ export const textRead=async (text :string)=>{
     },});
       
 }
+
+export const stopSpeaking=async ()=>{
+  await Tts.stop();
+}
