@@ -26,8 +26,8 @@ export const HomeScreen = () => {
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const [responseArrayIA, setResponseArrayIA]=useState<any[]>([]);
   const [lastInformation, setLastInformation]=useState<responseInfo>(
-    {questionUser: 'Bienvenido! Pasala bien',
-    response : 'Por favor preguntame tus dudas! :D', 
+    {questionUser: 'Welcome to my chat bot ',
+    response : 'please use to learn werever you want', 
     uriImg:'none'});
  
   useEffect(() => {

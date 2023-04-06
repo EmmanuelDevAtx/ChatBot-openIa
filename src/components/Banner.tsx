@@ -22,11 +22,11 @@ export const BannerOpenIa=(banner: bannerData)=>{
       visible={banner.visible}
       >
         <View >
-          <Text style={{alignSelf:'center', fontSize:20, marginVertical:10}}>Bienvenido a U Learn</Text>
+          <Text style={{alignSelf:'center', fontSize:20, marginVertical:10}}>Welcom to Chat bot</Text>
           <TextInput
               disabled = {banner.loadingResponse}
               mode='outlined'
-              label="Tu pregunta"
+              label="Enter your question"
               value={banner.question}
               onChangeText={text => banner.onChangeText(text)}
               style={{marginVertical:15, width: (width -(width / 14)), height: 50, alignSelf:'center'}}
@@ -36,7 +36,7 @@ export const BannerOpenIa=(banner: bannerData)=>{
             ? <Button  mode='outlined' onPress={()=>
               {
                 banner.askQuestion();
-              }} style={{marginVertical:5}}> Hacer pregunta</Button>
+              }} style={{marginVertical:5}}> Ask OpenIA</Button>
             : <></>
           }
         </View>

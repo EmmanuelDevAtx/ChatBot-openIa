@@ -1,6 +1,5 @@
 apply plugin: "com.android.application"
 
-
 import com.android.build.OutputFile
 import org.apache.tools.ant.taskdefs.condition.Os
 
@@ -259,9 +258,6 @@ android {
 }
 
 dependencies {
-    //io icons 
-    implementation project(':react-native-vector-icons')
-
     implementation fileTree(dir: "libs", include: ["*.jar"])
 
     //splash screeen
@@ -317,12 +313,6 @@ task copyDownloadableDepsToLibs(type: Copy) {
     from configurations.implementation
     into 'libs'
 }
-
-project.ext.vectoricons = [
-    iconFontNames: [ 'EvilIcons.ttf','Ionicons.ttf' ] // Name of the font files you want to copy
-]
-
-apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
 
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 

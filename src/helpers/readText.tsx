@@ -10,9 +10,5 @@ export const textRead=async (text :string)=>{
       KEY_PARAM_VOLUME: 1,
       KEY_PARAM_STREAM: 'STREAM_MUSIC',
     },});
-  console.log('ya termno');    
-}
-
-export const stopSpeaking=()=>{
-  Tts.stop(); 
+      
 }
