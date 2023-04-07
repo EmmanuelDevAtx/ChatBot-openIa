@@ -8,21 +8,21 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 export const openIA=async(question: string)=>{
-
     try {
-    
+    const respuesta =  JSON.stringify(question);
+    console.log(respuesta);
     const response = await openai.createCompletion({
       model: "text-davinci-003",
-      prompt: question,
+      prompt: respuesta,
       temperature: 0.8,
-      max_tokens: 300,
+      max_tokens: 250,
     });
-    const datos = response.data.choices as JSON;
-    const {message, urlImg} = responseIASelect(datos[0].text);
+    const datos = response.data.choices;
+    const message = datos[0].text as string;
 
-    return {message, urlImg};
+    return {message};
     } catch (error) {
     
     }
-    return {message: '', urlImg:''};
+    return {message: ''};
   }

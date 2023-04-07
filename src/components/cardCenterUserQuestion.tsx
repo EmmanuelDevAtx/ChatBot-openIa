@@ -2,8 +2,6 @@ import * as React from 'react';
 import { Image, View } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
 import { Button, Card, Text } from "react-native-paper";
-import Icon from 'react-native-vector-icons/Ionicons';
-import Rive from 'rive-react-native';
 
 interface cardInformation{
     onPress: () => void,

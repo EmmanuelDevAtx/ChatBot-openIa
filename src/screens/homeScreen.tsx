@@ -2,7 +2,7 @@ import * as React from 'react'
 import { useEffect, useState } from 'react';
 import { Clipboard, FlatList, ScrollView, StyleSheet, View } from 'react-native'
 import { openIA } from '../helpers/ResponseIA';
-import { Button,  Divider, } from 'react-native-paper';
+import { Button,  Card,  Divider, Text, } from 'react-native-paper';
 
 import { BannerOpenIa } from '../components/Banner';
 import { CardCenterEmpty } from '../components/cardCenterEmpty';
@@ -10,76 +10,48 @@ import { FloatingCustomButton } from '../components/floatingButton';
 import { stopSpeaking, textRead } from '../helpers/readText';
 import { CardCenterIaResponse } from '../components/cardCenterIaResponse';
 import { CardCenterUserQuestion } from '../components/cardCenterUserQuestion';
+import LinearGradient from 'react-native-linear-gradient';
 
-type responseInfo={
-  questionUser: string,
-  response: string,
-  uriImg: string,
+
+const contextIaSend={
+  data:[
+    {role: "system", content: "Eres un asistente util que va a ayudar a los niños a estudiar"}
+  ]
 }
-
-type context={
-  role: string,
-  content: string,
-}
-
 export const HomeScreen = () => {
   const [showQuestion, setShhowQuestion] = useState(true);
   const [question, setQuestion] = useState("");
+  const [lastquestion, setLastQuestion]= useState("");
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
-  const [responseArrayIA, setResponseArrayIA]=useState<any[]>([]);
-  const [lastInformation, setLastInformation]=useState<responseInfo>(
-    {questionUser: 'Welcome to my chat bot ',
-    response : 'please use to learn werever you want', 
-    uriImg:'none'});
- 
-  useEffect(() => {
-    console.log(lastInformation.questionUser);
-  }, [lastInformation]);
   const cliBoard=(respuestaIa : string)=>{
     Clipboard.setString(respuestaIa);
   }
 
   const regenerateResponse = async(questionBefore :string)=>{
     stopSpeaking();
-    await cleanInformation();
-    setIsLoadingResponse(true);
-    const {message, urlImg} = await openIA(questionBefore);
-      if(message === '' || urlImg === ''){
-        return console.log('algo ha pasado');
-      }
-      setIsLoadingResponse(false);
-      textRead(message);
-      setLastInformation({questionUser: questionBefore,response : message, uriImg:urlImg});
+    contextIaSend.data.splice(contextIaSend.data.length - 1,1);
+    contextIaSend.data.splice(contextIaSend.data.length - 1,1);
+    setTimeout(()=>{ask(questionBefore);},1000);
   }
-  // const newRewards = [...rewards];
-  // newRewards.splice(index, 1);
-  // {"role": "system", "content": "You are a helpful assistant."},
-  //       {"role": "user", "content": "Who won the world series in 2020?"},
-  //       {"role": "assistant", "content": "The Los Angeles Dodgers won the World Series in 2020."},
-  //       {"role": "user", "content": "Where was it played?"}
-  const cleanInformation = async()=>{
-    await setLastInformation({questionUser: 'none',response : 'none', uriImg:'none'});
-  }
-  const updateInfotmation = ()=>{
-    const information: any[] = [lastInformation, ...responseArrayIA];
-    setResponseArrayIA(information);
-  }
+
 
   const ask=async(questionSelf: string)=>{
     try {
-      await cleanInformation();
-      stopSpeaking
+      stopSpeaking();
       setIsLoadingResponse(true);
       setQuestion('');
-      updateInfotmation();
-      const {message, urlImg}= await openIA(questionSelf);
-      if(message === '' || urlImg === ''){
+      setLastQuestion(questionSelf);
+      const newUserMessage = { role: "user", content: questionSelf };
+      contextIaSend.data.push(newUserMessage);
+      const {message}= await openIA(questionSelf);
+      if(message === ''){
+        setIsLoadingResponse(false);
         return console.log('algo ha pasado');
       }
+      const newData = { role: "assistant", content: message };
+      contextIaSend.data.push(newData); 
       setIsLoadingResponse(false);
       textRead(message);
-      setLastInformation({questionUser: questionSelf,response : message, uriImg:urlImg});
-      console.log(lastInformation);
     } catch (error) {
       console.log('algo salió mal :(r');
     }
@@ -88,29 +60,29 @@ export const HomeScreen = () => {
 
   const renderItem = ({
     item: {
-      questionUser = '',
-      response = '',
-      uriImg = '',
+      content = '',
+      role = '',
     },
   }) => (
-        <>
-          <Divider />
-            <CardCenterIaResponse
-            onPress={()=>cliBoard(response)}
-            questionUser={questionUser}
-            responseUser={response}
-            style={styles.cardResponse}
-            styleBackgroundCard={styles.cardResponseBackground}
-            uriImg={uriImg}
+          role === "assistant"
+          ?
+          <CardCenterIaResponse
+          onPress={()=>cliBoard(content)}
+          questionUser={content}
+          responseUser={content}
+          style={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
           />
-
-          <CardCenterUserQuestion
-            onPress={()=>cliBoard(questionUser)}
-            questionUser={questionUser}
-            style={styles.cardResponse}
-            styleBackgroundCard={styles.cardResponseBackground}
-          />
-        </> 
+          :
+          role === "user"
+          ?<CardCenterUserQuestion
+          onPress={()=>cliBoard(content)}
+          questionUser={content}
+          style={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+        />
+        :<></>
+        
   );
   
   return (
@@ -122,53 +94,25 @@ export const HomeScreen = () => {
           askQuestion={()=> ask(question)}
           onChangeText={(text) => setQuestion(text)}
           question={question}
-        />
-        
+        />       
         <ScrollView>
-        {
-          
-          lastInformation.questionUser !== 'none'
-          ?
-
-          <>
-            <CardCenterIaResponse
-            onPress={()=>cliBoard(lastInformation.response)}
-            questionUser={lastInformation.questionUser}
-            responseUser={lastInformation.response}
-            style={styles.cardResponse}
-            styleBackgroundCard={styles.cardResponseBackground}
-            uriImg={lastInformation.uriImg}/>
-
-          <CardCenterUserQuestion
-            onPress={()=>cliBoard(lastInformation.questionUser)}
-            questionUser={lastInformation.questionUser}
-            style={styles.cardResponse}
-            styleBackgroundCard={styles.cardResponseBackground}/>
-          <Button  mode='outlined' buttonColor='#202931' onPress={()=>regenerateResponse(lastInformation.questionUser) } style={{marginVertical:20}}> Regenerate Response</Button>
-          
-        </>
-        
-          : <></>
-        }
-        
-            {isLoadingResponse ? 
-      <View style={{marginVertical:20 , paddingHorizontal:20
-      }}>
-        
-        <CardCenterEmpty
-          resourceName='making_message'
-          styles={styles.cardResponse}
-          styleBackgroundCard={styles.cardResponseBackground}
-        />
+        <>
+        <View style={{marginVertical:20 , paddingHorizontal:20}}>
+        <Card style={styles.cardResponse}>
+             <LinearGradient colors={['#2F3843','#394451']} style={styles.cardResponseBackground}>
+         <Card.Content>
+          <Text  style={{alignSelf:'center', fontSize:20}}> Hola!</Text>
+          <Text  style={{alignSelf:'center', fontSize:15}}> Soy tu asistente personal, puedes preguntarme lo que gustes, puedo ayudarte a entender cualquier tema!</Text>
+         </Card.Content>
+         </LinearGradient>
+            </Card>
       </View>
-      : <></>
-      }            
-        
+        </>
 
-        {responseArrayIA.length ? 
+        {contextIaSend.data.length ? 
           <FlatList
           // onScroll={onScroll}
-          data={responseArrayIA}
+          data={contextIaSend.data}
           renderItem={renderItem}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
@@ -183,7 +127,23 @@ export const HomeScreen = () => {
         :
           <></>
       }
+           {isLoadingResponse ? 
+      <View style={{marginVertical:20 , paddingHorizontal:20
+      }}>
         
+        <CardCenterEmpty
+          resourceName='making_message'
+          styles={styles.cardResponse}
+          styleBackgroundCard={styles.cardResponseBackground}
+        />
+      </View>
+      : <></>
+      }   
+      
+        {contextIaSend.data.length > 1
+        ?<Button mode='outlined' onPress={()=> regenerateResponse(lastquestion)} style={{marginVertical: 5}} > Regenerar la respuesta</Button>
+        : <></>
+      }
         </ScrollView>
         <FloatingCustomButton 
             setShowQuestion={()=> setShhowQuestion(!showQuestion)}
