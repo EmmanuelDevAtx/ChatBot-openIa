@@ -10,6 +10,8 @@ import "react-native-url-polyfill/auto";
 
 import { colors } from './src/Theme/Colors';
 import { HomeScreen } from './src/screens/homeScreen';
+import Toast from 'react-native-toast-message';
+import { toastConfig } from './src/config/toastConfig';
 
 const theme = {...DefaultTheme, ...colors};
 
@@ -23,6 +25,7 @@ const App = () => {
       <SafeAreaView style={{justifyContent:'center', alignContent:'center', flex:1 }}>
         <LinearGradient colors={['#29313B','#1A1E23']} style={{height:'100%'}}>
           <HomeScreen/>
+          <Toast config={toastConfig}/>
         </LinearGradient>
       </SafeAreaView>
    </PaperProvider>

@@ -11,6 +11,7 @@ import { stopSpeaking, textRead } from '../helpers/readText';
 import { CardCenterIaResponse } from '../components/cardCenterIaResponse';
 import { CardCenterUserQuestion } from '../components/cardCenterUserQuestion';
 import LinearGradient from 'react-native-linear-gradient';
+import Toast from 'react-native-toast-message';
 
 
 const contextIaSend={
@@ -25,6 +26,12 @@ export const HomeScreen = () => {
   const [isLoadingResponse, setIsLoadingResponse] = useState(false);
   const cliBoard=(respuestaIa : string)=>{
     Clipboard.setString(respuestaIa);
+    Toast.show({
+      type: 'copyAswer',
+      text1: 'Has copeado la respuesta',
+      text2: respuestaIa,
+      styl: styles.cardResponse,
+    });
   }
 
   const regenerateResponse = async(questionBefore :string)=>{
