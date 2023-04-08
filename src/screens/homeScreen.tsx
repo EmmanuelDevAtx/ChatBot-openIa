@@ -30,7 +30,6 @@ export const HomeScreen = () => {
       type: 'copyAswer',
       text1: 'Has copeado la respuesta',
       text2: respuestaIa,
-      styl: styles.cardResponse,
     });
   }
 
