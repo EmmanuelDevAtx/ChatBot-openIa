@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Image, View } from "react-native";
 import LinearGradient from 'react-native-linear-gradient';
-import { Button, Card, Text } from "react-native-paper";
+import { Button, Card, Text, useTheme } from "react-native-paper";
+import UserSvg from '../img/svg/icons/sonreir.svg'
 
 interface cardInformation{
     onPress: () => void,
@@ -10,6 +11,7 @@ interface cardInformation{
     questionUser: string,
 };
 export const CardCenterUserQuestion=(data: cardInformation)=>{
+  const theme = useTheme();
 
     return(
       <View style={{  paddingHorizontal:20
@@ -20,7 +22,7 @@ export const CardCenterUserQuestion=(data: cardInformation)=>{
           <Card.Content style={{alignSelf:'flex-end'}}>
           <View style={{flexDirection:'row'}}>
           <Text style={{ fontSize:17, marginBottom:10}}>Yo </Text>
-            
+            <UserSvg height={20} width={20} fill={theme.colors.onSurface}/>
             </View>
             
             <Text style={{ fontSize:15}}>{data.questionUser}</Text>
