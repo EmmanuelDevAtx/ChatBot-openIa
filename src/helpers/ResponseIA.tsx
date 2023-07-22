@@ -17,12 +17,13 @@ export const openIA=async(question: string)=>{
       temperature: 0.8,
       max_tokens: 250,
     });
+    console.log(respuesta)
     const datos = response.data.choices;
     const message = datos[0].text as string;
 
     return {message};
     } catch (error) {
-    
+      console.error(error)
     }
     return {message: ''};
   }
